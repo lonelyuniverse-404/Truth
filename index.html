@@ -1,88 +1,88 @@
-
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Choice — Red Pill / Blue Pill</title>
   <style>
-    :root{
-      --bg:#000;--txt:#cfeecc;--muted:#6a8b76;--danger:#ff1b1b;--cool:#1b7dff;
-      --inset-top:env(safe-area-inset-top,0px);--inset-bottom:env(safe-area-inset-bottom,0px);--inset-left:env(safe-area-inset-left,0px);--inset-right:env(safe-area-inset-right,0px);
+    :root {
+      --bg: #000;
+      --txt: #cfeecc;
+      --muted: #6a8b76;
+      --danger: #ff1b1b;
+      --cool: #1b7dff;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;width:100%;max-width:100%;margin:0;overflow-x:hidden}
-    body{background:#000;color:var(--txt);font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.02em;padding:var(--inset-top) var(--inset-right) var(--inset-bottom) var(--inset-left)}/* Fullscreen sections with dvh/svh fallback */
-.screen{position:fixed;left:0;top:0;width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6vw;opacity:0;pointer-events:none;transition:opacity .5s}
-@supports(height:100dvh){.screen{width:100dvw;height:100dvh}}
-@supports(height:100svh){.screen{width:100svw;height:100svh}}
-#home{opacity:1;pointer-events:auto}
-.screen:target{opacity:1;pointer-events:auto}
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; height:100%; width:100%; }
+    body { background:#000; color:var(--txt); font-family: monospace; overflow:hidden; }.screen {
+  position:fixed; inset:0;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; padding:5vw;
+  opacity:0; pointer-events:none;
+  transition:opacity .5s;
+  z-index:0;
+}
+#home { opacity:1; pointer-events:auto; z-index:1; }
+.screen:target { opacity:1; pointer-events:auto; z-index:2; }
 
-h1,h2{margin:0 0 1rem;text-shadow:0 0 8px #0f0}
-h1{font-size:clamp(1.6rem,8vw,3.2rem)}
-h2{font-size:clamp(1.2rem,7vw,2.4rem)}
-p{max-width:60ch;margin:0 auto 1rem;color:var(--muted);font-size:clamp(.95rem,3.2vw,1.05rem)}
+h1,h2 { font-size:clamp(1.5rem,8vw,3rem); margin:0 0 1rem; text-shadow:0 0 8px #0f0; }
+h1 { max-width: 90vw; word-break: break-word; }
+p { max-width:60ch; margin:0 auto 1rem; color:var(--muted); font-size:clamp(.9rem,3vw,1rem); }
 
-/* Title that won’t cause layout shift: breaks on small screens */
-.title{display:inline-block;max-width:92vw;line-height:1.1}
-.title span{display:inline}
-@media(max-width:720px){.title span{display:block}}
+.cta { display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; }
+.pill { padding:1rem 2rem; border-radius:999px; font-weight:bold; text-transform:uppercase; cursor:pointer; color:#fff; text-decoration:none; z-index:3; position:relative; }
+.pill-red { background:radial-gradient(circle at 30% 30%, #ff5555, var(--danger)); }
+.pill-blue{ background:radial-gradient(circle at 30% 30%, #559dff, var(--cool)); }
 
-.cta{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
-.pill{padding:1rem 2rem;border-radius:999px;font-weight:bold;text-transform:uppercase;color:#fff;text-decoration:none}
-.pill-red{background:radial-gradient(circle at 30% 30%,#ff5555,var(--danger))}
-.pill-blue{background:radial-gradient(circle at 30% 30%,#559dff,var(--cool))}
+.error-screen { background:#050505; color:#f55; animation:glitch 1s steps(2,end) infinite; }
+@keyframes glitch { 0%{text-shadow:2px 0 red,-2px 0 blue;} 50%{text-shadow:-2px 0 red,2px 0 blue;} 100%{text-shadow:2px 0 red,-2px 0 blue;} }
 
-/* Error / fatal look */
-.error-screen{background:#050505;animation:glitch 1s steps(2,end) infinite}
-@keyframes glitch{0%{text-shadow:2px 0 red,-2px 0 blue}50%{text-shadow:-2px 0 red,2px 0 blue}100%{text-shadow:2px 0 red,-2px 0 blue}}
-.bar{width:min(560px,92vw);height:10px;border-radius:999px;background:#220;box-shadow:inset 0 0 0 1px rgba(255,80,80,.25);overflow:hidden;margin:18px auto 8px}
-.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f55,#faa)}
-.progressing .bar>i{animation:barprogress 3.8s linear forwards}
-@keyframes barprogress{0%{width:0%}100%{width:100%}}
+.progress-bar { width:60%; max-width:400px; height:8px; background:#222; border-radius:4px; overflow:hidden; margin-top:1rem; }
+.progress-fill { height:100%; width:0; background:#f55; animation:fill 4s linear forwards; }
+@keyframes fill { to { width:100%; } }
 
-.back{margin-top:2rem}
-.back a{color:#9fb}
+.back { margin-top:2rem; }
+.back a { color:#9fb; }
 
-  </style>
+.screen.active{opacity:1;pointer-events:auto;} #home:not(.active){opacity:0 !important; pointer-events:none !important;} </style>
+
 </head>
 <body>
-  <!-- HOME -->
   <section id="home" class="screen">
-    <h1 class="title"><span>THE SIMULATION</span> <span>HAS YOU</span></h1>
+    <h1>THE SIMULATION<br/>HAS YOU</h1>
     <p>What you are. Where you are. Two answers hidden in one question. Choose.</p>
     <div class="cta">
       <a class="pill pill-red" href="#error">Red Pill</a>
       <a class="pill pill-blue" href="#blue">Blue Pill</a>
     </div>
-  </section>  <!-- SYSTEM ERROR (auto-advance; no reversal UI) -->  <section id="error" class="screen error-screen progressing" aria-label="System error interstitial">
+  </section>  <section id="error" class="screen error-screen">
     <h2>SYSTEM ERROR</h2>
     <p>Reality breach detected. Exit sequence corrupted…</p>
-    <div class="bar" aria-hidden="true"><i></i></div>
-    <p style="opacity:.8">Reconstructing context…</p>
-  </section>  <!-- RED (irreversible: return leads to fatal) -->  <section id="red" class="screen">
+    <div class="progress-bar"><div class="progress-fill"></div></div>  </section>  <section id="red" class="screen">
     <h2>EXIT SEQUENCE INITIATED</h2>
     <p>Layers peel away. The hum fades. The doorway opens to the present moment.</p>
     <p><strong>Lesson: Focus on the present.</strong></p>
-    <div class="back"><a href="#fatal">Return</a></div>
-  </section>  <!-- BLUE -->  <section id="blue" class="screen">
+    <div class="back"><span style="color:#f55">Fatal system breakdown — irreversible.</span></div>
+  </section>  <section id="blue" class="screen">
     <h2>SIMULATION CONTINUES</h2>
     <p>Comforting patterns resume their loop. The room is familiar again.</p>
     <p><strong>Lesson: Even inside a simulation, presence is real.</strong></p>
     <div class="back"><a href="#home">Back</a></div>
-  </section>  <!-- FATAL (no way back) -->  <section id="fatal" class="screen error-screen" aria-label="Fatal system breakdown">
-    <h2>FATAL SYSTEM BREAKDOWN</h2>
-    <p>Attempted reversal detected. Context map irrecoverable. There is no path back.</p>
-  </section>  <!-- tiny, targeted script for hash-based auto-advance from #error → #red -->  <script>
+  </section>
+  <script>
     (function(){
-      function arm(){
-        if(location.hash === '#error'){
-          document.getElementById('error').classList.add('progressing');
-          setTimeout(function(){ location.hash = '#red'; }, 4000);
+      var timer = null;
+      var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+      function setActive(){
+        var id = location.hash ? location.hash.slice(1) : 'home';
+        screens.forEach(function(s){ s.classList.toggle('active', s.id === id); });
+        if(timer){ clearTimeout(timer); timer = null; }
+        if(id === 'error'){
+          timer = setTimeout(function(){ if(location.hash === '#error'){ location.hash = '#red'; } }, 4000);
         }
       }
-      window.addEventListener('hashchange', arm, {passive:true});
-      arm();
+      window.addEventListener('hashchange', setActive, {passive:true});
+      setActive();
     })();
-  </script></body>
+  </script>
+</body>
 </html>
