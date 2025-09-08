@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>The Choice — Red Pill / Blue Pill</title>
+  <style>
+    /* ==========================
+       Cinematic Matrix‑style site
+       Pure HTML + CSS (no JS)
+       ========================== */:root {
+  --bg: #050805;                 /* deep black with a hint of green */
+  --grid: rgba(0, 255, 130, .06);
+  --scan: rgba(50,255,120,.05);
+  --glow: #20ff6b;
+  --txt: #d0f6da;                /* pale green */
+  --muted: #6e8f7a;
+  --danger: #ff2a2a;
+  --danger-deep: #7a0000;
+  --cool: #2aaaff;
+  --cool-deep: #001a7a;
+  --white: #f4f5f6;
+  --black: #000;
+}
+
+/* Global reset and base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, Monaco, "Courier New", monospace;
+  letter-spacing: 0.02em;
+  overflow: hidden; /* cinematic */
+}
+
+a { color: inherit; text-decoration: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Fullscreen screens */
+.screen {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 600ms ease;
+}
+#home { opacity: 1; pointer-events: auto; }
+.screen:target { opacity: 1; pointer-events: auto; }
+
+/* Letterbox bars for cinematic feel */
+.cinema::before,
+.cinema::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 9vh; background: #000; z-index: 30;
+  box-shadow: 0 1px 0 rgba(255,255,255,.02) inset;
+  pointer-events: none; /* do not block clicks */
+}
+.cinema::before { top: 0; }
+.cinema::after  { bottom: 0; }
+
+/* Subtle grid + noise backdrop */
+.backdrop {
+  position: absolute; inset: 0; overflow: hidden;
+}
+.grid {
+  position: absolute; inset: 0; background:
+    radial-gradient(1200px 800px at 70% 30%, rgba(32,255,150,.06), transparent 60%),
+    linear-gradient(transparent 0 98%, rgba(32,255,150,.08) 99%),
+    linear-gradient(90deg, transparent 0 98%, rgba(32,255,150,.08) 99%);
+  background-size: auto, 100% 28px, 28px 100%;
+  mix-blend-mode: screen; opacity: .35;
+}
+
+/* Scanlines */
+.scanlines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom, var(--scan) 0 2px, transparent 2px 4px
+  );
+  animation: scan 6s linear infinite;
+  mix-blend-mode: overlay; pointer-events: none;
+}
+@keyframes scan { 0% { transform: translateY(-2%);} 100% { transform: translateY(2%);} }
+
+/* Code-rain illusion using layered gradients on separate elements */
+.rain { position: absolute; inset: 0; opacity: .45; filter: blur(.2px) saturate(1.3); mix-blend-mode: screen; }
+.r1, .r2, .r3 { position: absolute; inset: -50% 0; }
+.r1 { background: repeating-linear-gradient(to bottom, rgba(65,255,120,.15) 0 14px, transparent 14px 28px);
+      animation: rainMove 7s linear infinite; }
+.r2 { background: repeating-linear-gradient(to bottom, rgba(65,255,180,.1) 0 9px, transparent 9px 22px);
+      animation: rainMove 11s linear infinite; opacity: .6; }
+.r3 { background: repeating-linear-gradient(to bottom, rgba(65,255,120,.07) 0 6px, transparent 6px 18px);
+      animation: rainMove 15s linear infinite; opacity: .5; }
+@keyframes rainMove { to { transform: translateY(50%); } }
+
+/* Flicker + CRT glow */
+.crt {
+  text-shadow: 0 0 12px rgba(32,255,150,.55), 0 0 34px rgba(32,255,150,.25);
+  animation: flicker 5s infinite steps(60, end);
+}
+@keyframes flicker {
+  0%, 100% { opacity: .98; }
+  10% { opacity: .92; }
+  20% { opacity: .97; }
+  30% { opacity: .9; }
+  40% { opacity: .95; }
+  50% { opacity: .88; }
+  60% { opacity: .95; }
+  70% { opacity: .9; }
+  80% { opacity: .94; }
+  90% { opacity: .96; }
+}
+
+/* Typewriter headline */
+.type {
+  --w: 27ch; /* adjustable */
+  border-right: 2px solid var(--glow);
+  white-space: nowrap; overflow: hidden;
+  width: 0; animation: typing 3.5s steps(27, end) forwards, caret 1s step-end infinite;
+}
+@keyframes typing { from { width: 0;} to { width: var(--w);} }
+@keyframes caret { 50% { border-color: transparent; } }
+
+/* Glitch lines */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+}
+.glitch::before { left: 1px; text-shadow: -1px 0 #0ff; clip-path: polygon(0 2%, 100% 2%, 100% 28%, 0 28%);
+                   animation: g1 2.5s infinite linear alternate; }
+.glitch::after  { left: -1px; text-shadow: -1px 0 #f0f; clip-path: polygon(0 62%, 100% 62%, 100% 90%, 0 90%);
+                   animation: g2 2.8s infinite linear alternate; }
+@keyframes g1 { 0% { transform: translateX(0);} 100% { transform: translateX(.8px);} }
+@keyframes g2 { 0% { transform: translateX(0);} 100% { transform: translateX(-1px);} }
+
+.wrap { position: relative; z-index: 10; text-align: center; padding: 8vh 4vw; max-width: 960px; }
+h1 { font-size: clamp(28px, 6vw, 64px); line-height: 1.05; margin: 0 0 16px; }
+p  { font-size: clamp(14px, 2.2vw, 18px); color: var(--muted); margin: 8px 0 24px; }
+
+.cta { display: flex; gap: clamp(16px, 5vw, 48px); justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+
+.pill {
+  --shine: rgba(255,255,255,.65);
+  display: inline-grid; place-items: center;
+  padding: 14px 32px; border-radius: 999px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  position: relative; isolation: isolate; overflow: hidden; transform: translateZ(0);
+  box-shadow: 0 10px 24px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.09);
+  transition: transform .15s ease, filter .2s ease;
+}
+.pill:focus-visible { outline: 2px dashed currentColor; outline-offset: 4px; }
+.pill::before { /* inner glossy shine */
+  content: ""; position: absolute; inset: 0; background: linear-gradient( to bottom, var(--shine), transparent 45% ); opacity: .35; mix-blend-mode: screen;
+}
+.pill::after { /* moving specular glint */
+  content: ""; position: absolute; top: -120%; bottom: -120%; width: 30%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+  transform: translateX(-140%) rotate(12deg); transition: transform .6s ease;
+}
+.pill:hover { transform: translateY(-2px) scale(1.03); filter: saturate(1.1); }
+.pill:hover::after { transform: translateX(240%) rotate(12deg); }
+
+.pill-red { color: #fff; background: radial-gradient(120% 140% at 30% 30%, #ff6b6b, var(--danger) 45%, var(--danger-deep)); }
+.pill-blue{ color: #fff; background: radial-gradient(120% 140% at 30% 30%, #6bb7ff, var(--cool) 45%, var(--cool-deep)); }
+
+.hint { font-size: 12px; letter-spacing: .08em; color: #6c8; text-transform: uppercase; opacity: .8; }
+
+.footer-note { margin-top: 28px; font-size: 12px; color: #6a8; opacity: .75; }
+
+/* Panels for RED and BLUE outcomes */
+.panel { position: relative; display: grid; place-items: center; min-height: 100svh; padding: 8vh 4vw; }
+
+/* Shared return link */
+.back { position: fixed; left: 20px; bottom: 18px; z-index: 40; font-size: 12px; opacity: .85; }
+.back a { color: #9fb; border-bottom: 1px dashed rgba(144,255,200,.35); }
+
+/* RED — Evacuation from the simulation */
+#red { background: #0a0a0a; }
+#red .transition {
+  position: absolute; inset: 0; background: radial-gradient(1200px 900px at 50% 50%, rgba(255,64,64,.18), transparent 60%),
+             repeating-linear-gradient(to bottom, rgba(255,64,64,.05) 0 2px, transparent 2px 4px);
+  mix-blend-mode: screen; animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% {opacity:.6;} 50% {opacity:.85;} }
+
+#red .wrap { text-align: center; max-width: 920px; }
+#red h2 { font-size: clamp(26px, 6vw, 60px); margin: 0 0 10px; letter-spacing: .04em; }
+#red p  { color: #e8e9ea; max-width: 62ch; }
+
+/* Door opening to a calm, present moment */
+.door {
+  --bg1: #f8fafb; --bg2: #ffffff; --txt: #111;
+  position: absolute; inset: 0; background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: var(--txt); display: grid; place-items: center; text-align: center; padding: 6vh 4vw;
+  clip-path: inset(50% 50% 50% 50% round 12px); /* fully closed */
+  animation: doorOpen 1.8s ease-out 900ms forwards;
+}
+@keyframes doorOpen {
+  0%   { clip-path: inset(50% 50% 50% 50% round 12px); filter: grayscale(100%) contrast(120%); }
+  60%  { clip-path: inset(2% 2% 2% 2% round 16px); filter: grayscale(6%) contrast(104%); }
+  100% { clip-path: inset(0 0 0 0); filter: grayscale(0%) contrast(100%); }
+}
+.door h3 { font-size: clamp(22px, 5vw, 44px); color: #0f172a; margin: 0 0 10px; }
+.door p  { color: #2b2f39; max-width: 60ch; }
+.present {
+  margin-top: 14px; display: inline-block; padding: 10px 16px; border-radius: 12px; border: 1px solid #0f172a20; background: #ffffffaa;
+  backdrop-filter: blur(4px); color: #0f172a; font-weight: 600;
+}
+
+/* BLUE — Remain in the simulation */
+#blue { background: #020503; }
+#blue .wrap { text-align: center; }
+#blue h2 { font-size: clamp(26px, 6vw, 60px); margin: 0 0 10px; }
+#blue p  { max-width: 62ch; }
+
+/* Deeper code rain and vignette */
+#blue .rain { opacity: .6; }
+.vignette { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 150px rgba(0,0,0,.75); }
+
+/* Lesson tag */
+.lesson { margin-top: 18px; font-size: 13px; color: #9fe5c3; opacity: .9; letter-spacing: .07em; text-transform: uppercase; }
+
+/* Home screen layout */
+.home-inner { display: grid; gap: 8px; }
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+  </style>
+</head>
+<body>
+  <!-- ========== HOME / CHOICE ========= -->
+  <section id="home" class="screen cinema" aria-label="Choose your path">
+    <div class="backdrop" aria-hidden="true">
+      <div class="grid"></div>
+      <div class="rain">
+        <div class="r1"></div>
+        <div class="r2"></div>
+        <div class="r3"></div>
+      </div>
+      <div class="scanlines"></div>
+    </div><div class="wrap">
+  <div class="home-inner">
+    <h1 class="crt glitch type" data-text="THE SIMULATION HAS YOU">THE SIMULATION HAS YOU</h1>
+    <p>What you are. Where you are. Two answers hidden in one question. Choose.
+    </p>
+
+    <div class="cta" role="navigation" aria-label="Pill choices">
+      <a class="pill pill-red" href="#red" aria-label="Take the red pill (evacuate the simulation)">Red Pill</a>
+      <a class="pill pill-blue" href="#blue" aria-label="Take the blue pill (remain in the simulation)">Blue Pill</a>
+    </div>
+
+    <div class="footer-note">
+      <span class="hint">Some perceive this as horror. It is only a mirror.</span>
+    </div>
+  </div>
+</div>
+
+  </section>  <!-- ========== RED PILL — EVACUATION ========= -->  <section id="red" class="screen cinema" aria-label="Red pill outcome: evacuate the simulation">
+    <div class="backdrop" aria-hidden="true">
+      <div class="transition"></div>
+      <div class="scanlines"></div>
+    </div><div class="panel">
+  <div class="wrap">
+    <h2 class="crt glitch" data-text="EXIT SEQUENCE INITIATED">EXIT SEQUENCE INITIATED</h2>
+    <p>Layers peel away. The hum fades. Patterns stop insisting on meaning. The doorway opens.</p>
+  </div>
+
+  <!-- Calm, present world reveals through an animated door -->
+  <div class="door" aria-live="polite">
+    <div>
+      <h3>Welcome back.</h3>
+      <p>You are not yesterday and not tomorrow. You are <strong>here</strong>. You are <strong>now</strong>.</p>
+      <div class="lesson">Lesson: Focus on the present.</div>
+      <div style="margin-top:20px"><a class="present" href="#home" aria-label="Return to the choice">Return to the choice</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="back"><a href="#home" aria-label="Back to home">&larr; Back</a></div>
+
+  </section>  <!-- ========== BLUE PILL — REMAIN ========= -->  <section id="blue" class="screen cinema" aria-label="Blue pill outcome: remain in the simulation">
+    <div class="backdrop" aria-hidden="true">
+      <div class="grid"></div>
+      <div class="rain">
+        <div class="r1"></div>
+        <div class="r2"></div>
+        <div class="r3"></div>
+      </div>
+      <div class="scanlines"></div>
+      <div class="vignette"></div>
+    </div><div class="panel">
+  <div class="wrap">
+    <h2 class="crt glitch" data-text="SIMULATION CONTINUES">SIMULATION CONTINUES</h2>
+    <p>Comforting patterns resume their loop. Signals climb the spine like rain down glass. The room is familiar again.</p>
+    <div class="lesson">Lesson: Even inside a simulation, presence is real.</div>
+    <div class="cta" style="margin-top:24px">
+      <a class="pill pill-red" href="#red" aria-label="Switch to the red pill path">Switch to Red</a>
+      <a class="pill pill-blue" href="#home" aria-label="Return to the choice">Return</a>
+    </div>
+  </div>
+</div>
+
+<div class="back"><a href="#home" aria-label="Back to home">&larr; Back</a></div>
+
+  </section>
+</body>
+</html>
